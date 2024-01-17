@@ -17,7 +17,7 @@ model2 = model2.to('cuda')
 def llm1(history: DialogHistory) -> str:
     prompt = history.generate_prompt()
     input_ids = tokenizer1(prompt, return_tensors='pt')
-    gen_ids = model1.generate(**input_ids, temperature=1)[len(input_ids):]
+    gen_ids = model1.generate(**input_ids.to(model1.device), temperature=1)[len(input_ids):]
     gen_text = tokenizer1.decode(gen_ids[0])
     return gen_text
 
@@ -25,6 +25,6 @@ def llm1(history: DialogHistory) -> str:
 def llm2(history: DialogHistory) -> str:
     prompt = history.generate_prompt()
     input_ids = tokenizer2(prompt, return_tensors='pt')
-    gen_ids = model2.generate(**input_ids, temperature=1)[len(input_ids):]
+    gen_ids = model2.generate(**input_ids.to(model2.device), temperature=1)[len(input_ids):]
     gen_text = tokenizer2.decode(gen_ids[0])
     return gen_text
