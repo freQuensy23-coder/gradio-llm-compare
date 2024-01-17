@@ -25,4 +25,4 @@ with gr.Blocks() as app:
                inputs=[input_area, text2, chat_area],
                outputs=[input_area, text1, text2, chat_area])
 
-app.launch()
+app.launch(share=True)
