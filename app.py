@@ -7,10 +7,10 @@ with gr.Blocks() as app:
     chat_area = gr.Chatbot()
     with gr.Row():
         with gr.Column(scale=1):
-            text1 = gr.Textbox(interactive=False, label='Second answer', lines=3)
+            text1 = gr.Textbox(interactive=False, label='First answer', lines=3)
             btn1 = gr.Button('Apply first')
         with gr.Column(scale=1):
-            text2 = gr.Textbox(interactive=False, label='First answer', lines=3)
+            text2 = gr.Textbox(interactive=False, label='Second answer', lines=3)
             btn2 = gr.Button('Apply second')
     input_area = gr.Textbox(lines=1, label='Text input', placeholder='Type here and press Enter...', interactive=None)
 
