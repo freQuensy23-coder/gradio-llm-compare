@@ -15,7 +15,7 @@ model2 = model2.to('cuda')
 
 
 def llm1(history: DialogHistory) -> str:
-    prompt = history.generate_prompt()
+    prompt = history.apply_chat_template(tokenizer1)
     input_ids = tokenizer1(prompt, return_tensors='pt')
     gen_ids = model1.generate(**input_ids.to(model1.device), temperature=1, max_new_tokens=64)[0][len(input_ids[0]):]
     gen_text = tokenizer1.decode(gen_ids, skip_special_tokens=True)
@@ -23,7 +23,7 @@ def llm1(history: DialogHistory) -> str:
 
 
 def llm2(history: DialogHistory) -> str:
-    prompt = history.generate_prompt()
+    prompt = history.apply_chat_template(tokenizer2)
     input_ids = tokenizer2(prompt, return_tensors='pt')
     gen_ids = model2.generate(**input_ids.to(model2.device), temperature=1, max_new_tokens=64)[0][len(input_ids[0]):]
     gen_text = tokenizer2.decode(gen_ids, skip_special_tokens=True)

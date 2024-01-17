@@ -1,5 +1,8 @@
 from typing import Optional
 
+import transformers
+from jinja2 import TemplateError
+
 
 class DialogHistory:
     default_system_prompt = 'You are AI-assistant'
@@ -28,9 +31,17 @@ class DialogHistory:
     def system_prompt(self):
         return self.messages[0]['text']
 
-    def generate_prompt(self)-> str:
+    def generate_prompt(self) -> str:
         result = f'{self.system_prompt}\n' + '\n'.join(
             [f'{message["role"]}: {message["text"]}' for message in self.messages[1:]])
         if self.messages[-1]['role'] == 'user':
             result += f'\nbot:'
         return result
+
+    def apply_chat_template(self, tokenizer: transformers.PreTrainedTokenizer):
+        messages = self.messages.copy()
+        try:
+            return tokenizer.decode(tokenizer.apply_chat_template(messages), skip_special_tokens=True)
+        except TemplateError:
+            # Some tokenizers do not support a system message
+            return messages[0]['content'] + '\n' + tokenizer.decode(tokenizer.apply_chat_template(messages[1:]), skip_special_tokens=True)
