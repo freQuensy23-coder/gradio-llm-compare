@@ -20,9 +20,9 @@ class DialogHistory:
             obj.messages.append({'role': 'system', 'content': system_prompt})
         else:
             obj.messages.append({'role': 'system', 'content': DialogHistory.default_system_prompt})
-        for user_message, bot_message in messages:
+        for user_message, assistant_message in messages:
             obj.messages.append({'role': 'user', 'content': user_message})
-            obj.messages.append({'role': 'bot', 'content': bot_message})
+            obj.messages.append({'role': 'assistant', 'content': assistant_message})
         if new_message:
             obj.messages.append({'role': 'user', 'content': new_message})
         return obj
@@ -35,7 +35,7 @@ class DialogHistory:
         result = f'{self.system_prompt}\n' + '\n'.join(
             [f'{message["role"]}: {message["content"]}' for message in self.messages[1:]])
         if self.messages[-1]['role'] == 'user':
-            result += f'\nbot:'
+            result += f'\nassistant:'
         return result
 
     def apply_chat_template(self, tokenizer: transformers.PreTrainedTokenizer):
