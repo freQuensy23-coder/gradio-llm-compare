@@ -17,23 +17,23 @@ class DialogHistory:
     def from_gradio(messages: [tuple], new_message: Optional[str] = None, system_prompt: [str] = None):
         obj = DialogHistory()
         if system_prompt:
-            obj.messages.append({'role': 'system', 'text': system_prompt})
+            obj.messages.append({'role': 'system', 'content': system_prompt})
         else:
-            obj.messages.append({'role': 'system', 'text': DialogHistory.default_system_prompt})
+            obj.messages.append({'role': 'system', 'content': DialogHistory.default_system_prompt})
         for user_message, bot_message in messages:
-            obj.messages.append({'role': 'user', 'text': user_message})
-            obj.messages.append({'role': 'bot', 'text': bot_message})
+            obj.messages.append({'role': 'user', 'content': user_message})
+            obj.messages.append({'role': 'bot', 'content': bot_message})
         if new_message:
-            obj.messages.append({'role': 'user', 'text': new_message})
+            obj.messages.append({'role': 'user', 'content': new_message})
         return obj
 
     @property
     def system_prompt(self):
-        return self.messages[0]['text']
+        return self.messages[0]['content']
 
     def generate_prompt(self) -> str:
         result = f'{self.system_prompt}\n' + '\n'.join(
-            [f'{message["role"]}: {message["text"]}' for message in self.messages[1:]])
+            [f'{message["role"]}: {message["content"]}' for message in self.messages[1:]])
         if self.messages[-1]['role'] == 'user':
             result += f'\nbot:'
         return result
